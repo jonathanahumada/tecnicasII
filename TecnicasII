@@ -1,0 +1,195 @@
+
+* Clase I: Repaso [2018-12-03 Mon]
+El 'break' rompe solo iteraciones, no bloques en general. El modificador de 
+acceso default de java parece ser 'public'. Pero no lo es (es source
+private). Hay tres estados
+de modificador de acceso: 
+-public (+)
+-private (-)
+-source private (es publico para las clases que hacen parte del) (-)
+-protected (#)
+
+
+Las palabras 'paradigma', 'abstracción' y 'encapsulamiento' suelen causar
+gran impacto. Parecen ser 'muy teóricas' pero nunca se definen a fondo.
+Pregunté por bibliografía extra sobre apuntadores y memoria.
+
+** Constructores
+
+¡¡Cuando se declaran constructores, su signatura no debe incluir 'void'. !!
+*** DONE preguntar por bibliografía.
+* Clase II: static Keyword [2018-12-04 Tue]
+** modificadores
+*** TODO static
+El Keyword 'Static' se utiliza para declarar variables que
+no pertenecen a una instancia particular de la 
+clase. Se pueden llamar como 'Clase.metodo()'.
+Es decir, se llaman sin instanciarse.
+
+La condición es que los métodos estáticos no 
+deben modificar variables de las instancias.
+Si así fuera, el método estático modificaría 
+la variable en todas las instancias.
+
+Las variables estáticas se pueden usar 
+con el fin de que todas las instancias
+de una misma clase tengan acceso a la misma variable
+estática de la clase. (ver Final)
+
+se usa 'static' cuando el método o la variable
+'no dependen del estado del objeto'
+*** final
+El Keyword 'final' siempre se usa en 
+conjunto con 'static'. Es decir 'static final'.
+'Final' impide que la variable sea modificada,
+por lo que se utiliza para declarar constantes.
+Por notación, se deben escribir las constantes
+en mayúscula sostenida.
+Por ejemplo:
+    public static final int DIAS_DE_LA_SEMANA = 7;
+** herencia
+El keyword 'extends' se usa en la declaracion de 
+clase para indicar herencia.
+En java la herencia no pasa el constructor.
+El objetivo de la herencia es 1) economizar 
+código, y 2) facilitar el mantenimiento del código.
+(Un solo cambio debe hacerse en la clase para modificar sus instancias)
+3. Para eventualmente utilizar polimorfismo.
+Los atributos privados no se heredan. Lo que se hace es marcarlo protected O
+hacer un truco con Super();
+*** TODO preguntar por qué los objetos se modifican si ya estan instanciados
+
+** bonus
+*** ArrayList
+ArrayList no tiene inicializador directo, tal como 
+Array lo tiene. Se usa:
+
+ Arrays.asList("Buenos Aires", "Córdoba", "La Plata"));
+
+Pero esto debe tener side effects.
+
+**** averiguar sobre inicializador
+*** Paquetes
+Los paquetes en java son directorios. En un directorio
+solo debe haber un folder se sourc packages
+- Sourec Packages (codigo fuente)
+- Build (código máquina)
+- Tests
+- dist
+- nbproject
+
+El import funciona como si las definiciones
+estuvieran dentro del mismo paqute el 'Math.min()'
+es porque se llama un método estático, no por 
+porque se deba invocar primero el paquete, como en
+Python.
+**** TODO averiguar sobre la estrucutra 
+
+** Garbage Colector
+cuando creamos un objeto, creamos un apuntador. Lo que hace 
+un objeto con la palabra new es apuntar a una localidad de memoria
+
+Persona persona1 = new Persona();
+Persona persona2 = new Persona();
+
+persona1.setNombre("Bart Simpson");
+
+persona2 = persona1; ---------> aquí hay que entender los apuntadores y las referencias.
+
+Aquí estoy haciendo que persona2 apunte a la misma localidad de memoria que persona1.
+Este comportamiento se da en objetos.
+
+Ahora si apuntamos ambas referencias a null: persona1=null; persona2=null;
+¿Qué pasa con el objeto de nombre 'Bart Simpson'? El objeto sigue apuntando
+a la localidad de memoria pero está dereferenciado. Aquí e cuando viene el 
+garbage collector y dinamicamente lo elimina.
+
+No obstante, el garbage colector antes de eliminar el objeto invoca su método
+finalize()(Es un método de objeto), el cual puede ser sobreescrito.
+Puedes llamar al garcage collector con System.gc(), funciona en un thread 
+de baja proridad.
+*** TODO averiguar que quiere decir dinamicamente
+
+* Clase III: <2018-12-05 Wed> 
+** TODO Para efectos de este ejercicio, un proveedor solo proporciona un producto.
+   Esto uiere decir que solo hay precioProducto? Cómo se debe inicializar?
+** TODO Esta clase debe tener un método llamado solicitar pedido que reciba 
+como parámetro un nombre de producto y una cantidad de unidades solicitada. 
+El nombre que recibe para que se debe usar? No hay una variable nombreProducto
+** TODO el precio total del pedido.
+A diferencia de Venta no hay una variable valor que reciba el estado. Se debería sobreentender?
+** TODO no se especifica el valor de la constante TARIFA_DE_ENVIO_INTERNACIONAL
+   
+** TODO Verifique de acuerdo a estos requerimientos en donde se debe imprimir el valor total del pedido
+Los requerimientos diccen que (ver primer bullet).
+** DONE VIMOS PROTECTED? NO.
+Un metodo estatico no puede acceder a variables no estáticas.
+Access Levels
+Modifier	Class	Package	Subclass	World
+public    	Y	Y	Y          	Y
+protected	Y	Y	Y          	N
+no modifier	Y	Y	N          	N
+private- 	Y	N	N       	N
+
+** Protected
+Source Package/ zoo / animal.java
+                    principal.java
+
+Source Package/ zoo2 / Prueba.java
+ 
+Prueba.java no tiene acceso a variables protegidas en zoo.
+
+** bonus
+No puede haber llamados a metodos en la definicion de una clase sin que esta esté en un método que se usará en un una instancia o en 
+un main(). 
+
+Las asignación pasa valores NO referencias a memoria. Tocaía usar el New.**
+.
+** Constructores de la superclase
+Cuando se instancia una sublaces por ejemplo Canino que esta 
+heredando de una superclase como por ejempl Animal, al 
+momento de crear una inrncia de la clase Canino, se hace un 
+llamado al construcor de la super-clase inmediatamente superior.  El 
+llamado es implicito pero tambien es posible que l slamdo se haga de forma
+expliita y para ello se utiliza la palabra reservada SUper();
+
+Osea, aunque la superclase tenga un atributo privada puedo 'traermelo' 
+a una subclase, si en el constructor de la superclase hago Super(Tipo argumento);
+
+Siempre se llama implicitamente al constructor por defecto de la superclase.
+Se hace una cadena. Por lo general el constructor por defecto de la superlclase
+se deja vacío por eso. 
+
+** Relaciones UML
+Asociacion o agregacion
+Composición
+Relación de Herencia.
+
+** que es una superclase
+es una plantillla de la cual pueden heredar atributos y métodos otras clases una
+
+
+** teoria de la sobreescritura
+*** early binding
+cuando un método se complila se asocia con su clase. EN llamadas futoras se mantiene disponible el par. Tiempo de compilacion
+
+*** Dynamic lookup
+Se hace en forma de cadena. Por ejemplo cuando los metodos no estan definidos explicitamente en una sublcase y los hereda de todos. 
+
+
+* Clae IV: Herencia <2018-12-06 Thu>
+** herencia hacia abajo
+** el array de circulos que tiene cilindros evalua a circulos 
+
+* Polimorfismo
+* Interfaces
+* Clases Abstractas
+* Evaluaciones
+
+| Nota             | Valor |
+|------------------+-------|
+| parcial          |    15 |
+| parcial          |    20 |
+| proyecto         |    20 |
+| sustentacion     |    15 |
+| tareas, trabajos | 30
